@@ -29,6 +29,12 @@
           <button class="theme-btn" id="themeBtn" aria-label="Cambiar tema">🌙</button>
           <button class="lang-btn" id="langBtn">🌐 EN</button>
           <button class="cart-btn" id="abrirCarritoBtn">
+          <button class="login-btn" id="loginBtn">
+  👤 Ingresar
+</button>
+          <button class="logout-btn" id="logoutBtn" style="display:none;">
+  🚪 Salir
+</button>
           🛒 <span data-i18n="nav.carrito">Carrito</span>
           <span class="cart-badge" id="cart-count">0</span>
         </button>
@@ -36,6 +42,46 @@
     </nav>
   </header>
 
+  <div class="modal-overlay" id="loginOverlay">
+
+  <div class="cart-modal">
+
+    <div class="cart-header">
+      <h3>Acceso</h3>
+      <button class="close-btn" id="cerrarLoginBtn">✕</button>
+    </div>
+
+    <div class="cart-body">
+
+      <input
+        type="email"
+        id="email"
+        placeholder="Correo electrónico">
+
+      <br><br>
+
+      <input
+        type="password"
+        id="password"
+        placeholder="Contraseña">
+
+      <br><br>
+
+      <button class="btn-pedir" id="btnLogin">
+        Iniciar sesión
+      </button>
+
+      <br><br>
+
+      <button class="btn-vaciar" id="btnRegister">
+        Registrarse
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
   <div class="modal-overlay" id="cartOverlay">
     <div class="cart-modal">
       
@@ -286,6 +332,8 @@
     <p class="footer-copy" data-i18n="footer.copy">© 2024 La Olla Mágica. Todos los derechos reservados.</p>
   </footer>
 
+  <script type="module" src="firebase.js"></script>
   <script src="js/script.js"></script>
+
 </body>
 </html>
