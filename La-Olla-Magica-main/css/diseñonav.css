@@ -1186,3 +1186,34 @@ body.dark-mode .estado-badge.estado-cerrado {
   transform: translateY(0);
   filter: blur(0);
 }
+
+/* Botones de sesión */
+.login-btn,
+.logout-btn {
+  background: var(--bg-tarjetas);
+  border: 2px solid var(--texto-header-footer);
+  border-radius: 25px;
+  padding: 8px 16px;
+  color: var(--texto-header-footer);
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.3s ease;
+}
+
+.login-btn:hover,
+.logout-btn:hover {
+  background-color: var(--texto-header-footer);
+  color: var(--bg-header-footer);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.login-btn:active,
+.logout-btn:active {
+  transform: scale(0.96);
+}
