@@ -634,3 +634,23 @@ document.addEventListener('DOMContentLoaded', () => {
   aplicarIdioma();         // Traduce e invoca el control de horario
   inicializarAnimacionScroll(); // Lanza los observadores de scroll
 });
+
+document
+.getElementById("loginBtn")
+.addEventListener("click", () => {
+
+  document
+    .getElementById("loginOverlay")
+    .classList.add("open");
+
+});
+
+document
+.getElementById("cerrarLoginBtn")
+.addEventListener("click", () => {
+
+  document
+    .getElementById("loginOverlay")
+    .classList.remove("open");
+
+});
