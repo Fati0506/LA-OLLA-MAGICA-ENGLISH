@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Perfil - La Olla Mágica</title>
+  <link rel="stylesheet" href="css/diseñonav.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    .profile-container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+    
+    /* Encabezado compacto del usuario */
+    .user-header { display: flex; align-items: center; justify-content: space-between; background: var(--bg-tarjetas); padding: 20px 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 30px; flex-wrap: wrap; gap: 15px; }
+    .user-info h2 { margin: 0 0 5px 0; font-size: 20px; color: var(--texto-principal); }
+    .user-info p { margin: 0; color: var(--texto-mutado); font-size: 13px; }
+    .edit-name-group { display: flex; gap: 10px; }
+    .edit-name-group input { padding: 8px 12px; border-radius: 20px; border: 1px solid var(--border-input); font-family: 'Montserrat'; font-size: 13px; background: var(--bg-principal); color: var(--texto-principal); outline: none; }
+    .edit-name-group button { padding: 8px 16px; border-radius: 20px; border: none; background: #6c5ce7; color: white; cursor: pointer; font-size: 13px; font-weight: bold; transition: opacity 0.2s; }
+    .edit-name-group button:hover { opacity: 0.9; }
+
+    /* Tarjetas de contenido */
+    .card { background: var(--bg-tarjetas); padding: 25px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); margin-bottom: 25px; }
+    
+    /* Estados de Pedidos */
+    .order-list { display: flex; flex-direction: column; gap: 15px; margin-top: 15px; }
+    .order-item { border: 1px solid var(--border-input); padding: 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; background: var(--bg-principal); }
+    .order-details h4 { margin: 0 0 5px 0; color: var(--texto-principal); font-size: 15px; }
+    .order-details p { margin: 0; font-size: 13px; color: var(--texto-mutado); }
+    .badge-estado { padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+    .estado-pendiente { background: #fee2e2; color: #991b1b; }
+    .estado-preparando { background: #fef08a; color: #854d0e; }
+    .estado-camino { background: #dbeafe; color: #1e40af; }
+    .estado-entregado { background: #dcfce7; color: #166534; }
+
+    /* Mesas */
+    .mapa-mesas { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 20px; text-align: center; }
+    .mesa { padding: 15px; border: 2px solid #b0a0e0; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-weight: bold; background: var(--bg-principal); font-size: 13px;}
+    .mesa.seleccionada { background-color: #4d4b7d; color: white; border-color: #4d4b7d; }
+    .mesa.ocupada { background-color: #e0e0e0; color: #a0a0a0; border-color: #ccc; cursor: not-allowed; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <nav class="navbar">
+      <a href="index.html" class="logo">🍲 La Olla Mágica</a>
+      <div class="nav-links">
+        <a href="index.html">Volver a la Carta</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="profile-container">
+    
+    <div class="user-header" style="justify-content: space-between;">
+      <div class="user-info">
+        <h2 id="displayName">Cargando...</h2>
+        <p id="userEmail">Obteniendo datos...</p>
+      </div>
+      <div style="text-align: right;">
+        <div style="background: #fff3cd; color: #856404; padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 14px; margin-bottom: 10px; display: inline-block;">
+          ✨ <span id="userPoints">150</span> Puntos Mágicos
+        </div>
+        <div class="edit-name-group">
+          <input type="text" id="profileName" placeholder="Tu nombre y apellido">
+          <button id="btnUpdateProfile">Actualizar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Mis Pedidos Recientes 🛵</h3>
+      <div class="order-list" id="listaPedidosUsuario">
+        <p style="text-align: center; font-size: 14px; color: gray;">Cargando tus pedidos...</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Mis Reservas 📅</h3>
+      <div class="order-list" id="listaReservasUsuario">
+        <p style="text-align: center; font-size: 14px; color: gray;">Cargando tus reservas...</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Agendar una Nueva Reserva 🍷</h3>
+      <p style="font-size: 14px; color: var(--texto-mutado);">Selecciona la fecha, hora y tu mesa favorita.</p>
+      
+      <div style="display: flex; gap: 15px; margin-top: 15px;">
+        <div style="flex: 1;">
+          <label style="font-size: 12px; font-weight: bold;">Fecha:</label>
+          <input type="date" id="resFecha" class="profile-input" style="width: 100%; box-sizing: border-box;">
+        </div>
+        <div style="flex: 1;">
+          <label style="font-size: 12px; font-weight: bold;">Hora:</label>
+          <input type="time" id="resHora" class="profile-input" style="width: 100%; box-sizing: border-box;">
+        </div>
+      </div>
+
+      <div class="mapa-mesas" id="mapaMesasContainer">
+        <div class="mesa" data-mesa="Mesa 1 - Salón">Mesa 1<br><small>2 pers.</small></div>
+        <div class="mesa" data-mesa="Mesa 2 - Central">Mesa 2<br><small>4 pers.</small></div>
+        <div class="mesa" data-mesa="Mesa 3 - Ventana">Mesa 3<br><small>4 pers.</small></div>
+        <div class="mesa" data-mesa="Mesa 4 - Terraza">Mesa 4<br><small>6 pers.</small></div>
+      </div>
+      <br>
+      <button class="submit-btn" id="btnConfirmarReserva" style="width: 100%; height: 42px;">Enviar Solicitud de Reserva</button>
+    </div>
+  </main>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc, updateDoc, collection, query, where, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBVegmUaY7mOUzh0n0clwvKQV3efaj4K1Y",
+      authDomain: "la-olla-magica.firebaseapp.com",
+      projectId: "la-olla-magica",
+      storageBucket: "la-olla-magica.firebasestorage.app",
+      messagingSenderId: "302206189526",
+      appId: "1:302206189526:web:17c16fdef8e797de896e77"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    let mesaSeleccionada = null;
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        globalThis.location.href = "index.html";
+        return;
+      }
+      
+      document.getElementById("userEmail").textContent = user.email;
+      
+      const docSnap = await getDoc(doc(db, "usuarios", user.uid));
+      let nombreActual = user.email.split('@')[0];
+
+      if (docSnap.exists() && docSnap.data().nombre) {
+        nombreActual = docSnap.data().nombre;
+      }
+      
+      document.getElementById("displayName").textContent = `Hola, ${nombreActual}`;
+      document.getElementById("profileName").value = nombreActual;
+
+      cargarMisPedidos(user.uid);
+      cargarMisReservas(user.uid); // Nueva función
+    });
+
+    document.getElementById("btnUpdateProfile").addEventListener("click", async () => {
+      const nuevoNombre = document.getElementById("profileName").value.trim();
+      if (!nuevoNombre) return;
+      const user = auth.currentUser;
+      if (user) {
+        try {
+          await updateDoc(doc(db, "usuarios", user.uid), { nombre: nuevoNombre });
+          document.getElementById("displayName").textContent = `Hola, ${nuevoNombre}`;
+          alert("¡Tu nombre se actualizó!");
+        } catch (e) { alert("Error: " + e.message); }
+      }
+    });
+
+    async function cargarMisPedidos(userId) {
+      const lista = document.getElementById("listaPedidosUsuario");
+      try {
+        const q = query(collection(db, "pedidos"), where("userId", "==", userId));
+        const querySnapshot = await getDocs(q);
+        
+        if(querySnapshot.empty) {
+          lista.innerHTML = `<p style="text-align:center; color:gray; font-size:13px;">Aún no tienes pedidos registrados.</p>`;
+          return;
+        }
+
+        lista.innerHTML = "";
+        let totalGastado = 0; // Para calcular puntos
+
+        querySnapshot.forEach((docSnap) => {
+          const data = docSnap.data();
+          totalGastado += data.total || 0;
+          let estado = data.estado || "Pendiente";
+          let claseEstado = estado.toLowerCase() === "preparando" ? "estado-preparando" : 
+                            estado.toLowerCase() === "en camino" ? "estado-camino" : 
+                            estado.toLowerCase() === "entregado" ? "estado-entregado" : "estado-pendiente";
+
+          lista.innerHTML += `
+            <div class="order-item">
+              <div class="order-details">
+                <h4>Orden #${docSnap.id.substring(0, 6).toUpperCase()}</h4>
+                <p>${data.itemsDetalle}</p>
+                <p><strong>Total: S/ ${data.total.toFixed(2)}</strong></p>
+              </div>
+              <span class="badge-estado ${claseEstado}">${estado}</span>
+            </div>
+          `;
+        });
+        
+        // Simular puntos (1 punto por cada sol gastado + 150 de regalo inicial)
+        document.getElementById("userPoints").textContent = Math.floor(totalGastado + 150);
+        
+      } catch (error) { console.error(error); }
+    }
+
+    // NUEVO: CARGAR RESERVAS DEL USUARIO
+    async function cargarMisReservas(userId) {
+      const lista = document.getElementById("listaReservasUsuario");
+      try {
+        const q = query(collection(db, "reservas"), where("userId", "==", userId));
+        const querySnapshot = await getDocs(q);
+        
+        if(querySnapshot.empty) {
+          lista.innerHTML = `<p style="text-align:center; color:gray; font-size:13px;">No tienes reservas próximas.</p>`;
+          return;
+        }
+
+        lista.innerHTML = "";
+        querySnapshot.forEach((docSnap) => {
+          const data = docSnap.data();
+          let estado = data.estado || "En Revisión";
+          let claseEstado = estado === "Aprobada" ? "estado-entregado" : 
+                            estado === "Rechazada" ? "estado-pendiente" : "estado-preparando";
+
+          lista.innerHTML += `
+            <div class="order-item">
+              <div class="order-details">
+                <h4>${data.mesaReservada}</h4>
+                <p>📅 ${data.fechaAgendada || 'Sin fecha'} a las ⏰ ${data.horaAgendada || 'Sin hora'}</p>
+              </div>
+              <span class="badge-estado ${claseEstado}">${estado}</span>
+            </div>
+          `;
+        });
+      } catch (error) { console.error(error); }
+    }
+
+    // CONTROL DE MESAS
+    document.getElementById("mapaMesasContainer").addEventListener("click", (e) => {
+      const elemento = e.target.closest(".mesa");
+      if (!elemento || elemento.classList.contains("ocupada")) return;
+      document.querySelectorAll(".mesa").forEach(m => m.classList.remove("seleccionada"));
+      elemento.classList.add("seleccionada");
+      mesaSeleccionada = elemento.getAttribute("data-mesa");
+    });
+
+    document.getElementById("btnConfirmarReserva").addEventListener("click", async () => {
+      const fecha = document.getElementById("resFecha").value;
+      const hora = document.getElementById("resHora").value;
+
+      if (!mesaSeleccionada || !fecha || !hora) {
+        alert("Por favor, elige una fecha, una hora y selecciona una mesa.");
+        return;
+      }
+      
+      const user = auth.currentUser;
+      if (user) {
+        try {
+          await addDoc(collection(db, "reservas"), {
+            userId: user.uid,
+            correo: user.email,
+            mesaReservada: mesaSeleccionada,
+            fechaAgendada: fecha,
+            horaAgendada: hora,
+            fechaRegistro: new Date(),
+            estado: "En Revisión" // Estado inicial
+          });
+          alert(`¡Solicitud enviada! Revisaremos la disponibilidad para el ${fecha}.`);
+          cargarMisReservas(user.uid); // Recargar la vista
+        } catch (error) {
+          alert("Error: " + error.message);
+        }
+      }
+    });
+  </script>
+  
+</body>
+</html>
